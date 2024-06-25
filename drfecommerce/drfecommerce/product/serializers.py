@@ -3,10 +3,11 @@ from .models import Category, Brand, Product, ProductLine
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField(source="name")
+
     class Meta:
         model = Category
-        # fields = "__all__"
-        exclude = ("id", "lft", "rght", "tree_id", "level", "parent")
+        fields = "category_name"
 
 
 class BrandSerializer(serializers.ModelSerializer):
