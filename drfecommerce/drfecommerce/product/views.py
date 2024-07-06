@@ -4,7 +4,12 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import action
-from django.db import connections
+from django.db import connection
+from pygments import highlight
+from pygments.formatters import TerminalFormatter
+from pygments.lexers.sql import SqlLexer
+from sqlparse import format
+
 
 # Create your views here.
 
@@ -28,13 +33,18 @@ class BrandViewSet(viewsets.ViewSet):
 
 
 class ProductViewSet(viewsets.ViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.isActive.all()
     lookup_field = "slug"
 
     def retrieve(self, request, slug=None):
-        serializer = ProductSerializer(self.queryset.filter(slug=slug), many=True)
-        print(connections.queries)
-        return Response(serializer.data)
+        serializer = ProductSerializer(self.queryset.filter(slug=slug).select_related("category", "brand"), many=True)
+        data = Response(serializer.data)
+        # q = list(connection.queries)
+        # print(len(q))
+        # for qs in q:
+        #     sqlformatted = format(str(qs["sql"]), reindent=True)
+        #     print(highlight(sqlformatted, SqlLexer(), TerminalFormatter()))
+        return data
 
     @extend_schema(responses=ProductSerializer)
     def list(self, request):
