@@ -22,9 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+import secrets
+
+# Generate a new secret key
+new_secret_key = secrets.token_hex(24)
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = new_secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

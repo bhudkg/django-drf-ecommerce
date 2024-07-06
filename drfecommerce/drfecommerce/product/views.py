@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import action
+from django.db import connections
 
 # Create your views here.
 
@@ -32,6 +33,7 @@ class ProductViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, slug=None):
         serializer = ProductSerializer(self.queryset.filter(slug=slug), many=True)
+        print(connections.queries)
         return Response(serializer.data)
 
     @extend_schema(responses=ProductSerializer)

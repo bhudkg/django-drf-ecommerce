@@ -7,13 +7,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = "category_name"
+        fields = ("category_name",)
 
 
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ["name"]
+        fields = ("name",)
 
 
 class ProductLineSerializer(serializers.ModelSerializer):
